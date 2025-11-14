@@ -5,7 +5,7 @@ go 1.24.0
 tool github.com/lopolopen/shoot/cmd/shoot
 
 require (
-	github.com/lopolopen/shoot v0.2.1-alpha.2
+	github.com/lopolopen/shoot v0.2.1-alpha.3
 	gopkg.in/yaml.v3 v3.0.1
 )
 

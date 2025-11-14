@@ -18,7 +18,7 @@ type client struct {
 	conf   *shoot.RestConf
 }
 
-func (c *client) ListOrgsForUser(per_page int, page int) ([]Org, map[string]string, error) {
+func (c *client) ListOrgsForUser(per_page *int, page *int) ([]Org, *Exception, error) {
 	path_ := "/user/orgs"
 
 	url_, err := url.JoinPath(c.conf.BaseURL(), path_)
@@ -32,8 +32,12 @@ func (c *client) ListOrgsForUser(per_page int, page int) ([]Org, map[string]stri
 	}
 
 	query_ := req_.URL.Query()
-	query_.Set("per_page", fmt.Sprintf("%v", per_page))
-	query_.Set("page", fmt.Sprintf("%v", page))
+	if per_page != nil {
+		query_.Set("per_page", fmt.Sprintf("%v", *per_page))
+	}
+	if page != nil {
+		query_.Set("page", fmt.Sprintf("%v", *page))
+	}
 	req_.URL.RawQuery = query_.Encode()
 
 	req_.Header.Add("Accept", "application/vnd.github+json")
@@ -59,12 +63,12 @@ func (c *client) ListOrgsForUser(per_page int, page int) ([]Org, map[string]stri
 		}
 		return r_, nil, nil
 	} else {
-		var r_ map[string]string
+		var r_ Exception
 		err = json.Unmarshal(body_, &r_)
 		if err != nil {
 			return nil, nil, err
 		}
-		return nil, r_, nil
+		return nil, &r_, nil
 	}
 }
 

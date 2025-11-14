@@ -39,7 +39,7 @@ func main() {
 			})
 		}),
 	)
-	orgs, ex, err := githubC.ListOrgsForUser(0, 0)
+	orgs, ex, err := githubC.ListOrgsForUser(nil, nil)
 	if err != nil {
 		panic(err)
 	}
