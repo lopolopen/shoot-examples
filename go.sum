@@ -5,8 +5,8 @@ github.com/google/go-github/v78 v78.0.0 h1:b1tytzFE8i//lRVDx5Qh/EdJbtTPtSVD3nF7h
 github.com/google/go-github/v78 v78.0.0/go.mod h1:Uxvdzy82AkNlC6JQ57se9TqvmgBT7RF0ouHDNg2jd6g=
 github.com/google/go-querystring v1.1.0 h1:AnCroh3fv4ZBgVIf1Iwtovgjaw/GiKJo8M8yD/fhyJ8=
 github.com/google/go-querystring v1.1.0/go.mod h1:Kcdr2DB4koayq7X8pmAG4sNG59So17icRSOU623lUBU=
-github.com/lopolopen/shoot v0.2.2-alpha.1 h1:rZwonUtfnxjL3kBPZTL/3GH4QSS/QdcalSVLveI23ZU=
-github.com/lopolopen/shoot v0.2.2-alpha.1/go.mod h1:pJvMz3LBIdydh7AfLkwuOIWPApFJ/YatPllzySA33X4=
+github.com/lopolopen/shoot v0.2.2-beta.1 h1:cUYem+vJxKS7gQCzNFb6wV9KnSrW6rDdhiQCbN25oD4=
+github.com/lopolopen/shoot v0.2.2-beta.1/go.mod h1:pJvMz3LBIdydh7AfLkwuOIWPApFJ/YatPllzySA33X4=
 golang.org/x/mod v0.30.0 h1:fDEXFVZ/fmCKProc/yAXXUijritrDzahmwwefnjoPFk=
 golang.org/x/mod v0.30.0/go.mod h1:lAsf5O2EvJeSFMiBxXDki7sCgAxEUcZHXoXMKT4GJKc=
 golang.org/x/sync v0.18.0 h1:kr88TuHDroi+UVf+0hZnirlk8o8T+4MrK6mr60WkH/I=

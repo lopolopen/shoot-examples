@@ -214,3 +214,381 @@ func (o *Org) UnmarshalJSON(data []byte) error {
 
 // ShootNew exists solely to fulfill the NewShooter interface contract
 func (o Org) ShootNew() { /*noop*/ }
+
+// NewUser constructs a new instance of type User
+func NewUser(login string, id int64, nodeId string, avatarUrl string, typ string) *User {
+	return &User{
+		login:      login,
+		id:         id,
+		node_id:    nodeId,
+		avatar_url: avatarUrl,
+		typ:        typ,
+	}
+}
+
+// Login gets the value of field login
+func (u *User) Login() string {
+	return u.login
+}
+
+// Id gets the value of field id
+func (u *User) Id() int64 {
+	return u.id
+}
+
+// NodeId gets the value of field node_id
+func (u *User) NodeId() string {
+	return u.node_id
+}
+
+// AvatarUrl gets the value of field avatar_url
+func (u *User) AvatarUrl() string {
+	return u.avatar_url
+}
+
+// Typ gets the value of field typ
+func (u *User) Typ() string {
+	return u.typ
+}
+
+// SetLogin sets the value of field login
+func (u *User) SetLogin(login_ string) {
+	u.login = login_
+}
+
+// SetId sets the value of field id
+func (u *User) SetId(id_ int64) {
+	u.id = id_
+}
+
+// SetNodeId sets the value of field node_id
+func (u *User) SetNodeId(node_id_ string) {
+	u.node_id = node_id_
+}
+
+// SetAvatarUrl sets the value of field avatar_url
+func (u *User) SetAvatarUrl(avatar_url_ string) {
+	u.avatar_url = avatar_url_
+}
+
+// SetTyp sets the value of field typ
+func (u *User) SetTyp(typ_ string) {
+	u.typ = typ_
+}
+
+type _User_marshal struct {
+	Login     string `json:"login"`
+	Id        int64  `json:"id"`
+	NodeId    string `json:"node_id"`
+	AvatarUrl string `json:"avatar_url"`
+	Typ       string `json:"type"`
+}
+type _User_unmarshal struct {
+	Login     string `json:"login"`
+	Id        int64  `json:"id"`
+	NodeId    string `json:"node_id"`
+	AvatarUrl string `json:"avatar_url"`
+	Typ       string `json:"type"`
+}
+
+// MarshalJSON serializes type User to json bytes
+func (u User) MarshalJSON() ([]byte, error) {
+	data := _User_marshal{
+		Login:     u.Login(),
+		Id:        u.Id(),
+		NodeId:    u.NodeId(),
+		AvatarUrl: u.AvatarUrl(),
+		Typ:       u.Typ(),
+	}
+	return json.Marshal(data)
+}
+
+// UnmarshalJSON deserializes json bytes to type User
+func (u *User) UnmarshalJSON(data []byte) error {
+	var user_ _User_unmarshal
+	if err := json.Unmarshal(data, &user_); err != nil {
+		return err
+	}
+	u.SetLogin(user_.Login)
+	u.SetId(user_.Id)
+	u.SetNodeId(user_.NodeId)
+	u.SetAvatarUrl(user_.AvatarUrl)
+	u.SetTyp(user_.Typ)
+
+	return nil
+}
+
+// ShootNew exists solely to fulfill the NewShooter interface contract
+func (u User) ShootNew() { /*noop*/ }
+
+// NewProjectV2 constructs a new instance of type ProjectV2
+func NewProjectV2(id string, nodeId string, title string, description string, owner *User, creator *User) *ProjectV2 {
+	return &ProjectV2{
+		id:          id,
+		node_id:     nodeId,
+		title:       title,
+		description: description,
+		owner:       owner,
+		creator:     creator,
+	}
+}
+
+// Id gets the value of field id
+func (p *ProjectV2) Id() string {
+	return p.id
+}
+
+// NodeId gets the value of field node_id
+func (p *ProjectV2) NodeId() string {
+	return p.node_id
+}
+
+// Title gets the value of field title
+func (p *ProjectV2) Title() string {
+	return p.title
+}
+
+// Description gets the value of field description
+func (p *ProjectV2) Description() string {
+	return p.description
+}
+
+// Owner gets the value of field owner
+func (p *ProjectV2) Owner() *User {
+	return p.owner
+}
+
+// Creator gets the value of field creator
+func (p *ProjectV2) Creator() *User {
+	return p.creator
+}
+
+// SetId sets the value of field id
+func (p *ProjectV2) SetId(id_ string) {
+	p.id = id_
+}
+
+// SetNodeId sets the value of field node_id
+func (p *ProjectV2) SetNodeId(node_id_ string) {
+	p.node_id = node_id_
+}
+
+// SetTitle sets the value of field title
+func (p *ProjectV2) SetTitle(title_ string) {
+	p.title = title_
+}
+
+// SetDescription sets the value of field description
+func (p *ProjectV2) SetDescription(description_ string) {
+	p.description = description_
+}
+
+// SetOwner sets the value of field owner
+func (p *ProjectV2) SetOwner(owner_ *User) {
+	p.owner = owner_
+}
+
+// SetCreator sets the value of field creator
+func (p *ProjectV2) SetCreator(creator_ *User) {
+	p.creator = creator_
+}
+
+type _ProjectV2_marshal struct {
+	Id          string `json:"id"`
+	NodeId      string `json:"node_id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Owner       *User  `json:"owner"`
+	Creator     *User  `json:"creator"`
+}
+type _ProjectV2_unmarshal struct {
+	Id          string `json:"id"`
+	NodeId      string `json:"node_id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Owner       *User  `json:"owner"`
+	Creator     *User  `json:"creator"`
+}
+
+// MarshalJSON serializes type ProjectV2 to json bytes
+func (p ProjectV2) MarshalJSON() ([]byte, error) {
+	data := _ProjectV2_marshal{
+		Id:          p.Id(),
+		NodeId:      p.NodeId(),
+		Title:       p.Title(),
+		Description: p.Description(),
+		Owner:       p.Owner(),
+		Creator:     p.Creator(),
+	}
+	return json.Marshal(data)
+}
+
+// UnmarshalJSON deserializes json bytes to type ProjectV2
+func (p *ProjectV2) UnmarshalJSON(data []byte) error {
+	var projectV2_ _ProjectV2_unmarshal
+	if err := json.Unmarshal(data, &projectV2_); err != nil {
+		return err
+	}
+	p.SetId(projectV2_.Id)
+	p.SetNodeId(projectV2_.NodeId)
+	p.SetTitle(projectV2_.Title)
+	p.SetDescription(projectV2_.Description)
+	p.SetOwner(projectV2_.Owner)
+	p.SetCreator(projectV2_.Creator)
+
+	return nil
+}
+
+// ShootNew exists solely to fulfill the NewShooter interface contract
+func (p ProjectV2) ShootNew() { /*noop*/ }
+
+// NewRepo constructs a new instance of type Repo
+func NewRepo(id int64, nodeId string, name string, fullName string, private bool, owner *User, htmlUrl string, description string) *Repo {
+	return &Repo{
+		id:          id,
+		node_id:     nodeId,
+		name:        name,
+		full_name:   fullName,
+		private:     private,
+		owner:       owner,
+		html_url:    htmlUrl,
+		description: description,
+	}
+}
+
+// Id gets the value of field id
+func (r *Repo) Id() int64 {
+	return r.id
+}
+
+// NodeId gets the value of field node_id
+func (r *Repo) NodeId() string {
+	return r.node_id
+}
+
+// Name gets the value of field name
+func (r *Repo) Name() string {
+	return r.name
+}
+
+// FullName gets the value of field full_name
+func (r *Repo) FullName() string {
+	return r.full_name
+}
+
+// Private gets the value of field private
+func (r *Repo) Private() bool {
+	return r.private
+}
+
+// Owner gets the value of field owner
+func (r *Repo) Owner() *User {
+	return r.owner
+}
+
+// HtmlUrl gets the value of field html_url
+func (r *Repo) HtmlUrl() string {
+	return r.html_url
+}
+
+// Description gets the value of field description
+func (r *Repo) Description() string {
+	return r.description
+}
+
+// SetId sets the value of field id
+func (r *Repo) SetId(id_ int64) {
+	r.id = id_
+}
+
+// SetNodeId sets the value of field node_id
+func (r *Repo) SetNodeId(node_id_ string) {
+	r.node_id = node_id_
+}
+
+// SetName sets the value of field name
+func (r *Repo) SetName(name_ string) {
+	r.name = name_
+}
+
+// SetFullName sets the value of field full_name
+func (r *Repo) SetFullName(full_name_ string) {
+	r.full_name = full_name_
+}
+
+// SetPrivate sets the value of field private
+func (r *Repo) SetPrivate(private_ bool) {
+	r.private = private_
+}
+
+// SetOwner sets the value of field owner
+func (r *Repo) SetOwner(owner_ *User) {
+	r.owner = owner_
+}
+
+// SetHtmlUrl sets the value of field html_url
+func (r *Repo) SetHtmlUrl(html_url_ string) {
+	r.html_url = html_url_
+}
+
+// SetDescription sets the value of field description
+func (r *Repo) SetDescription(description_ string) {
+	r.description = description_
+}
+
+type _Repo_marshal struct {
+	Id          int64  `json:"id"`
+	NodeId      string `json:"node_id"`
+	Name        string `json:"name"`
+	FullName    string `json:"full_name"`
+	Private     bool   `json:"private"`
+	Owner       *User  `json:"owner"`
+	HtmlUrl     string `json:"html_url"`
+	Description string `json:"description"`
+}
+type _Repo_unmarshal struct {
+	Id          int64  `json:"id"`
+	NodeId      string `json:"node_id"`
+	Name        string `json:"name"`
+	FullName    string `json:"full_name"`
+	Private     bool   `json:"private"`
+	Owner       *User  `json:"owner"`
+	HtmlUrl     string `json:"html_url"`
+	Description string `json:"description"`
+}
+
+// MarshalJSON serializes type Repo to json bytes
+func (r Repo) MarshalJSON() ([]byte, error) {
+	data := _Repo_marshal{
+		Id:          r.Id(),
+		NodeId:      r.NodeId(),
+		Name:        r.Name(),
+		FullName:    r.FullName(),
+		Private:     r.Private(),
+		Owner:       r.Owner(),
+		HtmlUrl:     r.HtmlUrl(),
+		Description: r.Description(),
+	}
+	return json.Marshal(data)
+}
+
+// UnmarshalJSON deserializes json bytes to type Repo
+func (r *Repo) UnmarshalJSON(data []byte) error {
+	var repo_ _Repo_unmarshal
+	if err := json.Unmarshal(data, &repo_); err != nil {
+		return err
+	}
+	r.SetId(repo_.Id)
+	r.SetNodeId(repo_.NodeId)
+	r.SetName(repo_.Name)
+	r.SetFullName(repo_.FullName)
+	r.SetPrivate(repo_.Private)
+	r.SetOwner(repo_.Owner)
+	r.SetHtmlUrl(repo_.HtmlUrl)
+	r.SetDescription(repo_.Description)
+
+	return nil
+}
+
+// ShootNew exists solely to fulfill the NewShooter interface contract
+func (r Repo) ShootNew() { /*noop*/ }

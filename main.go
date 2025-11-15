@@ -53,7 +53,6 @@ func useShootExaple(cfg Config) {
 		shoot.Use(func(next http.RoundTripper) http.RoundTripper {
 			return middleware.RoundTripper(func(req *http.Request) (*http.Response, error) {
 				req.Header.Add("Authorization", "token "+cfg.Token)
-				// req.Header.Add("If-None-Match", `W/"a084273e046c719304d32943a714def739f45d0445b821f9cdc90a65822ae9a6"`)
 				return next.RoundTrip(req)
 			})
 		}),
@@ -72,5 +71,48 @@ func useShootExaple(cfg Config) {
 		fmt.Println(org.Id())
 		fmt.Println(org.Login())
 		fmt.Println(org.Url())
+	}
+
+	repos, resp, err := c.ListReposForOrg(context.Background(), "lopolopen", nil, nil, nil)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	if resp != nil {
+		fmt.Println(resp.StatusCode)
+	}
+
+	for _, repo := range repos {
+		fmt.Println(repo.Id())
+		fmt.Println(repo.Name())
+		fmt.Println(repo.FullName())
+		fmt.Println(repo.Private())
+		if repo.Owner() != nil {
+			fmt.Println("owner: ", repo.Owner().Login())
+			fmt.Println("type: ", repo.Owner().Typ())
+		}
+		fmt.Println(repo.HtmlUrl())
+		fmt.Println(repo.Description())
+	}
+
+	projs, resp, err := c.ListProjectsForUser(context.Background(), "redochenzhen", nil, nil, nil)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	if resp != nil {
+		fmt.Println(resp.StatusCode)
+	}
+
+	for _, proj := range projs {
+		fmt.Println(proj.Id())
+		fmt.Println(proj.Title())
+		fmt.Println(proj.Description())
+		if proj.Owner() != nil {
+			fmt.Println(proj.Owner().Login())
+		}
+		if proj.Creator() != nil {
+			fmt.Println(proj.Creator().Login())
+		}
 	}
 }

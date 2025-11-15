@@ -9,6 +9,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/lopolopen/shoot"
@@ -65,6 +66,126 @@ func (c *client) ListOrgsForUser(ctx context.Context, per_page *int, page *int) 
 	}
 
 	var r_ []*Org
+	err = json.NewDecoder(resp_.Body).Decode(&r_)
+	if err == io.EOF {
+		err = nil //ignore EOF errors caused by empty response body
+	}
+	if err != nil {
+		return nil, resp_, err
+	}
+	return r_, resp_, nil
+}
+
+func (c *client) ListProjectsForUser(ctx context.Context, username string, beforce *string, after *string, per_page *int) ([]*ProjectV2, *http.Response, error) {
+	path_ := "/users/{username}/projectsV2"
+	path_ = strings.Replace(path_, "{username}", fmt.Sprintf("%v", username), 1)
+
+	url_, err := url.JoinPath(c.conf.BaseURL(), path_)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req_, err := http.NewRequestWithContext(ctx, "GET", url_, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	query_ := req_.URL.Query()
+	if beforce != nil {
+		query_.Set("beforce", fmt.Sprintf("%v", *beforce))
+	}
+	if after != nil {
+		query_.Set("after", fmt.Sprintf("%v", *after))
+	}
+	if per_page != nil {
+		query_.Set("per_page", fmt.Sprintf("%v", *per_page))
+	}
+	req_.URL.RawQuery = query_.Encode()
+
+	req_.Header.Add("Accept", "application/vnd.github+json")
+	req_.Header.Add("X-GitHub-Api-Version", "2022-11-28")
+
+	resp_, err := c.client.Do(req_)
+	if err != nil {
+		return nil, nil, err
+	}
+	defer resp_.Body.Close()
+
+	switch {
+	case resp_.StatusCode >= 500:
+		body_, _ := io.ReadAll(resp_.Body)
+		err = fmt.Errorf("server error %d: %s", resp_.StatusCode, string(body_))
+	case resp_.StatusCode >= 400:
+		body_, _ := io.ReadAll(resp_.Body)
+		err = fmt.Errorf("client error %d: %s", resp_.StatusCode, string(body_))
+	case resp_.StatusCode >= 300 || resp_.StatusCode < 200:
+		err = fmt.Errorf("not supported error %d", resp_.StatusCode)
+	}
+	if err != nil {
+		return nil, resp_, err
+	}
+
+	var r_ []*ProjectV2
+	err = json.NewDecoder(resp_.Body).Decode(&r_)
+	if err == io.EOF {
+		err = nil //ignore EOF errors caused by empty response body
+	}
+	if err != nil {
+		return nil, resp_, err
+	}
+	return r_, resp_, nil
+}
+
+func (c *client) ListReposForOrg(ctx context.Context, org string, typ *string, per_page *int, page *int) ([]*Repo, *http.Response, error) {
+	path_ := "/orgs/{org}/repos"
+	path_ = strings.Replace(path_, "{org}", fmt.Sprintf("%v", org), 1)
+
+	url_, err := url.JoinPath(c.conf.BaseURL(), path_)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req_, err := http.NewRequestWithContext(ctx, "GET", url_, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	query_ := req_.URL.Query()
+	if typ != nil {
+		query_.Set("type", fmt.Sprintf("%v", *typ))
+	}
+	if per_page != nil {
+		query_.Set("per_page", fmt.Sprintf("%v", *per_page))
+	}
+	if page != nil {
+		query_.Set("page", fmt.Sprintf("%v", *page))
+	}
+	req_.URL.RawQuery = query_.Encode()
+
+	req_.Header.Add("Accept", "application/vnd.github+json")
+	req_.Header.Add("X-GitHub-Api-Version", "2022-11-28")
+
+	resp_, err := c.client.Do(req_)
+	if err != nil {
+		return nil, nil, err
+	}
+	defer resp_.Body.Close()
+
+	switch {
+	case resp_.StatusCode >= 500:
+		body_, _ := io.ReadAll(resp_.Body)
+		err = fmt.Errorf("server error %d: %s", resp_.StatusCode, string(body_))
+	case resp_.StatusCode >= 400:
+		body_, _ := io.ReadAll(resp_.Body)
+		err = fmt.Errorf("client error %d: %s", resp_.StatusCode, string(body_))
+	case resp_.StatusCode >= 300 || resp_.StatusCode < 200:
+		err = fmt.Errorf("not supported error %d", resp_.StatusCode)
+	}
+	if err != nil {
+		return nil, resp_, err
+	}
+
+	var r_ []*Repo
 	err = json.NewDecoder(resp_.Body).Decode(&r_)
 	if err == io.EOF {
 		err = nil //ignore EOF errors caused by empty response body

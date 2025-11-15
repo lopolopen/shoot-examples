@@ -6,7 +6,7 @@ tool github.com/lopolopen/shoot/cmd/shoot
 
 require (
 	github.com/google/go-github/v78 v78.0.0
-	github.com/lopolopen/shoot v0.2.2-alpha.1
+	github.com/lopolopen/shoot v0.2.2-beta.1
 	gopkg.in/yaml.v3 v3.0.1
 )
 
