@@ -2,12 +2,6 @@ package github
 
 //go:generate go tool shoot new -getset -json -file=$GOFILE
 
-type Exception struct {
-	message           string
-	documentation_url string
-	status            string
-}
-
 type Org struct {
 	id                 int64
 	node_id            string

@@ -1,6 +1,11 @@
 package github
 
-import "github.com/lopolopen/shoot"
+import (
+	"context"
+	"net/http"
+
+	"github.com/lopolopen/shoot"
+)
 
 //go:generate go tool shoot rest -type=Client
 
@@ -13,5 +18,5 @@ type Client interface {
 	// ListOrgsForUser lists organizations for the authenticated user.
 	// GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#list-organizations-for-the-authenticated-user
 	//shoot: Get("/user/orgs")
-	ListOrgsForUser(per_page *int, page *int) ([]Org, *Exception, error)
+	ListOrgsForUser(ctx context.Context, per_page *int, page *int) ([]*Org, *http.Response, error)
 }

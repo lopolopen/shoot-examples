@@ -3,6 +3,7 @@
 package github
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -18,7 +19,7 @@ type client struct {
 	conf   *shoot.RestConf
 }
 
-func (c *client) ListOrgsForUser(per_page *int, page *int) ([]Org, *Exception, error) {
+func (c *client) ListOrgsForUser(ctx context.Context, per_page *int, page *int) ([]*Org, *http.Response, error) {
 	path_ := "/user/orgs"
 
 	url_, err := url.JoinPath(c.conf.BaseURL(), path_)
@@ -26,7 +27,7 @@ func (c *client) ListOrgsForUser(per_page *int, page *int) ([]Org, *Exception, e
 		return nil, nil, err
 	}
 
-	req_, err := http.NewRequest("GET", url_, nil)
+	req_, err := http.NewRequestWithContext(ctx, "GET", url_, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -49,27 +50,29 @@ func (c *client) ListOrgsForUser(per_page *int, page *int) ([]Org, *Exception, e
 	}
 	defer resp_.Body.Close()
 
-	body_, _ := io.ReadAll(resp_.Body)
-
-	if resp_.StatusCode >= 500 {
+	switch {
+	case resp_.StatusCode >= 500:
+		body_, _ := io.ReadAll(resp_.Body)
 		err = fmt.Errorf("server error %d: %s", resp_.StatusCode, string(body_))
-		return nil, nil, err
+	case resp_.StatusCode >= 400:
+		body_, _ := io.ReadAll(resp_.Body)
+		err = fmt.Errorf("client error %d: %s", resp_.StatusCode, string(body_))
+	case resp_.StatusCode >= 300 || resp_.StatusCode < 200:
+		err = fmt.Errorf("not supported error %d", resp_.StatusCode)
 	}
-	if resp_.StatusCode < 300 {
-		var r_ []Org
-		err = json.Unmarshal(body_, &r_)
-		if err != nil {
-			return nil, nil, err
-		}
-		return r_, nil, nil
-	} else {
-		var r_ Exception
-		err = json.Unmarshal(body_, &r_)
-		if err != nil {
-			return nil, nil, err
-		}
-		return nil, &r_, nil
+	if err != nil {
+		return nil, resp_, err
 	}
+
+	var r_ []*Org
+	err = json.NewDecoder(resp_.Body).Decode(&r_)
+	if err == io.EOF {
+		err = nil //ignore EOF errors caused by empty response body
+	}
+	if err != nil {
+		return nil, resp_, err
+	}
+	return r_, resp_, nil
 }
 
 // ConfigHTTPClient allows customization of the underlying http.Client.
