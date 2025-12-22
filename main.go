@@ -2,25 +2,34 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
-	"shoot-github-client/github"
+	"shoot-examples/shootmap/app/dto"
+	"shoot-examples/shootmap/domain/repo"
+	"shoot-examples/shootmap/infra/repoimpl"
+	"shoot-examples/shootrest/github"
 	"time"
 
 	github78 "github.com/google/go-github/v78/github"
 	"github.com/lopolopen/shoot"
 	"github.com/lopolopen/shoot/middleware"
 	"gopkg.in/yaml.v3"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type Config struct {
 	Token string `yaml:"token"`
+	DSN   string `yaml:"dsn"`
 }
 
 func main() {
-	data, err := os.ReadFile("etc/app.yaml")
-	// data, err := os.ReadFile("etc/private.yaml")
+	// data, err := os.ReadFile("etc/app.yaml")
+	data, err := os.ReadFile("etc/private.yaml")
 	if err != nil {
 		panic(err)
 	}
@@ -30,9 +39,9 @@ func main() {
 		panic(err)
 	}
 
-	useShootExaple(cfg)
-
+	// useShootRestExample(cfg)
 	// useGoogleClientExample(cfg)
+	shootMapExample(cfg)
 }
 
 func useGoogleClientExample(cfg Config) {
@@ -45,7 +54,7 @@ func useGoogleClientExample(cfg Config) {
 	fmt.Println(*resp)
 }
 
-func useShootExaple(cfg Config) {
+func useShootRestExample(cfg Config) {
 	c := shoot.NewRest[github.Client](
 		shoot.BaseURL("https://api.github.com"),
 		shoot.Timeout(3000*time.Millisecond),
@@ -115,4 +124,39 @@ func useShootExaple(cfg Config) {
 			fmt.Println(proj.Creator().Login())
 		}
 	}
+}
+
+func shootMapExample(cfg Config) {
+	db, err := gorm.Open(mysql.Open(cfg.DSN), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Warn),
+	})
+	if err != nil {
+		log.Fatalf("failed to connect database: %v", err)
+	}
+
+	repoimpl.Migrate(db)
+
+	ctx := context.Background()
+	{
+		var orderRepo repo.OrderRepo
+		orderRepo = repoimpl.NewOrderRepo(db)
+		order, err := orderRepo.Get(ctx, "u1000")
+		if err != nil {
+			panic(err)
+		}
+		orderDTO := new(dto.Order).FromDomain(order)
+		j, _ := json.Marshal(orderDTO)
+		fmt.Println(string(j))
+	}
+	// {
+	// 	var userRepo repo.UserRepo
+	// 	userRepo = repoimpl.NewUserRepo(db)
+	// 	user, err := userRepo.Get(ctx, 1)
+	// 	if err != nil {
+	// 		panic(err)
+	// 	}
+	// 	userDTO := new(dto.User).FromDomain(user)
+	// 	j, _ := json.Marshal(userDTO)
+	// 	fmt.Println(string(j))
+	// }
 }

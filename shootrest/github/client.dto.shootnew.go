@@ -208,7 +208,6 @@ func (o *Org) UnmarshalJSON(data []byte) error {
 	o.SetPublicMembersUrl(org_.PublicMembersUrl)
 	o.SetAvatarUrl(org_.AvatarUrl)
 	o.SetDescription(org_.Description)
-
 	return nil
 }
 
@@ -314,7 +313,6 @@ func (u *User) UnmarshalJSON(data []byte) error {
 	u.SetNodeId(user_.NodeId)
 	u.SetAvatarUrl(user_.AvatarUrl)
 	u.SetTyp(user_.Typ)
-
 	return nil
 }
 
@@ -435,7 +433,6 @@ func (p *ProjectV2) UnmarshalJSON(data []byte) error {
 	p.SetDescription(projectV2_.Description)
 	p.SetOwner(projectV2_.Owner)
 	p.SetCreator(projectV2_.Creator)
-
 	return nil
 }
 
@@ -586,7 +583,6 @@ func (r *Repo) UnmarshalJSON(data []byte) error {
 	r.SetOwner(repo_.Owner)
 	r.SetHtmlUrl(repo_.HtmlUrl)
 	r.SetDescription(repo_.Description)
-
 	return nil
 }
 
