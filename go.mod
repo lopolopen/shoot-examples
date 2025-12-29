@@ -6,7 +6,7 @@ tool github.com/lopolopen/shoot/cmd/shoot
 
 require (
 	github.com/google/go-github/v78 v78.0.0
-	github.com/lopolopen/shoot v0.3.2-beta.4
+	github.com/lopolopen/shoot v0.4.2-beta.2
 	github.com/shopspring/decimal v1.4.0
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/mysql v1.6.0

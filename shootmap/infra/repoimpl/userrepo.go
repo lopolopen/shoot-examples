@@ -3,6 +3,7 @@ package repoimpl
 import (
 	"context"
 	"shoot-examples/shootmap/domain/model"
+	"shoot-examples/shootmap/domain/qpo"
 	"shoot-examples/shootmap/domain/repo"
 	"shoot-examples/shootmap/infra/po"
 
@@ -11,6 +12,11 @@ import (
 
 type UserRepo struct {
 	db *gorm.DB
+}
+
+// Query implements [repo.UserRepo].
+func (r *UserRepo) Query(ctx context.Context, page qpo.Pagination) ([]*model.User, int64, error) {
+	panic("unimplemented")
 }
 
 func NewUserRepo(db *gorm.DB) *UserRepo {

@@ -147,6 +147,22 @@ func shootMapExample(cfg Config) {
 		orderDTO := new(dto.Order).FromDomain(order)
 		j, _ := json.Marshal(orderDTO)
 		fmt.Println(string(j))
+
+		pagi := dto.Pagination{
+			Page:    1,
+			PerPage: 20,
+		}
+		orders, total, err := orderRepo.Query(ctx, *pagi.ToQpo())
+		if err != nil {
+			panic(err)
+		}
+		orderDTOs := make([]*dto.Order, len(orders))
+		for i := range orders {
+			orderDTOs[i] = new(dto.Order).FromDomain(orders[i])
+		}
+		fmt.Printf("total orders: %d\n", total)
+		j, _ = json.Marshal(orderDTOs)
+		fmt.Println(string(j))
 	}
 	// {
 	// 	var userRepo repo.UserRepo
